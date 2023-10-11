@@ -6,12 +6,13 @@ return {
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       local catppuccin = require("catppuccin")
+      local flavour = vim.fn.has("macunix") and "macchiato" or "frappe"
 
       catppuccin.setup({
-        flavour = "frappe",
+        flavour = flavour,
         background = { -- :h background
           light = "latte",
-          dark = "frappe",
+          dark = flavour,
         },
         custom_highlights = function(colors)
           return {
