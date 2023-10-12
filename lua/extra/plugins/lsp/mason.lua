@@ -22,6 +22,8 @@ return {
         "lua_ls",
         "jdtls",
         "groovyls",
+        "pyright",
+        "helm_ls",
       },
       -- auto-install configured servers (with lspconfig)
       automatic_installation = true, -- not the same as ensure_installed
@@ -33,6 +35,7 @@ return {
         "stylua", -- lua formatter
         "isort", -- python formatter
         "black", -- python formatter
+        "flake8", -- python linter
         "eslint_d", -- js linter
       },
     })

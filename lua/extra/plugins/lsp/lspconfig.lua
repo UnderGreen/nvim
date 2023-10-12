@@ -134,11 +134,14 @@ return {
     end
 
     lspconfig.helm_ls.setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
       filetypes = { "helm" },
       cmd = { "helm_ls", "serve" },
     })
 
     lspconfig.groovyls.setup({
+      capabilities = capabilities,
       on_attach = on_attach,
       filetypes = { "groovy" },
       cmd = {
@@ -160,6 +163,11 @@ return {
           gofumpt = true,
         },
       },
+    })
+
+    lspconfig.pyright.setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
     })
   end,
 }
