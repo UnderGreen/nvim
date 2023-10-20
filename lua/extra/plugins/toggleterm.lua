@@ -3,8 +3,6 @@ return {
   event = "VeryLazy",
   config = function()
     local toggleterm = require("toggleterm")
-    local Terminal = require("toggleterm.terminal").Terminal
-    local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 
     toggleterm.setup({
       size = 20,
@@ -22,6 +20,9 @@ return {
         border = "curved",
       },
     })
+
+    local Terminal = require("toggleterm.terminal").Terminal
+    local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 
     function _LAZYGIT_TOGGLE()
       lazygit:toggle()
