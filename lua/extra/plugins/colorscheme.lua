@@ -6,7 +6,10 @@ return {
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       local catppuccin = require("catppuccin")
-      local flavour = vim.fn.has("macunix") and "macchiato" or "frappe"
+      local flavour = "macchiato"
+      if vim.loop.os_uname().sysname == "Linux" then
+        flavour = "frappe"
+      end
 
       catppuccin.setup({
         flavour = flavour,
