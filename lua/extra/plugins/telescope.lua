@@ -22,18 +22,25 @@ return {
     telescope.setup({
       -- configure custom mappings
       defaults = {
+        sort_mru = true,
+        sort_lastused = true,
         path_display = { "truncate" },
         mappings = {
           i = {
             ["<C-k>"] = actions.move_selection_previous, -- move to prev result
             ["<C-j>"] = actions.move_selection_next, -- move to next result
-            ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist, -- send selected to quickfixlist
           },
         },
       },
       extensions = {
         ["ui-select"] = {
           themes.get_dropdown({}),
+        },
+        ["smart_open"] = {
+          show_scores = false,
+          ignore_patterns = { "*.git/*", "*/tmp/*" },
+          match_algorithm = "fzf",
+          disable_devicons = false,
         },
       },
     })
@@ -46,6 +53,7 @@ return {
     local keymap = vim.keymap -- for conciseness
 
     keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" }) -- find files within current working directory, respects .gitignore
+    keymap.set("n", "<leader>fd", "<cmd>Telescope smart_open<cr>", { desc = "Smart open files" }) -- smarterly find files from all previous locations and from current cwd
     keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" }) -- find previously opened files
     keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" }) -- find string in current working directory as you type
     keymap.set("n", "<leader>fs", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" }) -- find string under cursor in current working directory
