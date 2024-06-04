@@ -11,7 +11,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({ { import = "extra.plugins" }, { import = "extra.plugins.lsp" } }, {
+require("lazy").setup({ { import = "extra.plugins" } }, {
   install = {
     colorscheme = { "catppuccin" },
   },
@@ -21,11 +21,5 @@ require("lazy").setup({ { import = "extra.plugins" }, { import = "extra.plugins.
   },
   change_detection = {
     notify = false,
-  },
-})
-
-vim.filetype.add({
-  filename = {
-    ["Jenkinsfile"] = "groovy",
   },
 })
