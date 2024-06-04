@@ -4,6 +4,9 @@ return {
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
+    -- Schema information
+    "b0o/SchemaStore.nvim",
+    { "j-hui/fidget.nvim", opts = {} },
   },
   config = function()
     -- import lspconfig plugin
@@ -76,7 +79,6 @@ return {
 
     lspconfig.gopls.setup({
       capabilities = capabilities,
-      on_attach = on_attach,
       settings = {
         gopls = {
           analyses = {
@@ -99,10 +101,40 @@ return {
 
     lspconfig.lua_ls.setup({
       capabilities = capabilities,
-      on_attach = on_attach,
       settings = {
         Lua = {},
       },
+    })
+
+    lspconfig.jsonls.setup({
+      capabilities = capabilities,
+      cmd = { "vscode-json-languageserver", "--stdio" },
+      settings = {
+        json = {
+          schemas = require("schemastore").json.schemas(),
+          validate = { enable = true },
+        },
+      },
+    })
+
+    lspconfig.yamlls.setup({
+      capabilities = capabilities,
+      settings = {
+        yaml = {
+          schemaStore = {
+            -- You must disable built-in schemaStore support if you want to use
+            -- this plugin and its advanced options like `ignore`.
+            enable = false,
+            -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+            url = "",
+          },
+          schemas = require("schemastore").yaml.schemas(),
+        },
+      },
+    })
+
+    lspconfig.bashls.setup({
+      capabilities = capabilities,
     })
   end,
 }
