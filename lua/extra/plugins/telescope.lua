@@ -9,6 +9,7 @@ return {
   },
   config = function()
     local telescope = require("telescope")
+    local builtin = require("telescope.builtin")
     local actions = require("telescope.actions")
     local transform_mod = require("telescope.actions.mt").transform_mod
 
@@ -19,11 +20,12 @@ return {
 
     -- or create your custom action
     local custom_actions = transform_mod({
-      open_trouble_qflist = function(prompt_bufnr)
+      open_trouble_qflist = function()
         trouble.toggle("quickfix")
       end,
     })
 
+    local grep_args = { "--hidden", "--glob", "!**/.git/*" }
     telescope.setup({
       defaults = {
         path_display = { "truncate" },
@@ -35,6 +37,33 @@ return {
             ["<C-t>"] = trouble_telescope.open,
             ["<C-n>"] = actions.cycle_history_next,
             ["<C-p>"] = actions.cycle_history_prev,
+            ["<esc>"] = actions.close,
+          },
+        },
+      },
+      pickers = {
+        find_files = {
+          find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
+        },
+        live_grep = {
+          additional_args = function()
+            return grep_args
+          end,
+        },
+        grep_string = {
+          additional_args = function()
+            return grep_args
+          end,
+        },
+        buffers = {
+          show_all_buffers = true,
+          sort_lastused = true,
+          theme = "dropdown",
+          previewer = false,
+          mappings = {
+            i = {
+              ["<c-d>"] = actions.delete_buffer + actions.move_to_top,
+            },
           },
         },
       },
@@ -62,6 +91,9 @@ return {
     keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
     keymap.set("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
     keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
+    keymap.set("n", "<leader>f.", function()
+      builtin.find_files({ cwd = vim.fn.expand("%:p:h") })
+    end, { desc = "Find files in the same directory as current one" })
     keymap.set("n", "<leader>fr", "<cmd>Telescope resume<cr>", { desc = "Resume previous telescope search" })
     keymap.set("n", "<leader>fs", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
     keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Show open buffers" }) -- list open buffers in current neovim instance
